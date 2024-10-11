@@ -1,0 +1,39 @@
+import java.util.Random;  
+import java.util.Scanner;  
+
+public class EnhancedNumberGuessingGame {  
+    public static void main(String[] args) {  
+        Random rand = new Random();  
+        int numberToGuess = rand.nextInt(100) + 1;  
+        Scanner scanner = new Scanner(System.in);  
+        int guess;  
+        int attempts = 0;  
+        boolean hasGuessedCorrectly = false;  
+
+        System.out.println("Welcome to the Enhanced Number Guessing Game!");  
+        System.out.println("I've selected a number between 1 and 100. Can you guess it?");  
+
+        while (!hasGuessedCorrectly) {  
+            System.out.print("Please enter your guess: ");  
+            guess = scanner.nextInt();  
+            attempts++;  
+
+            if (guess == numberToGuess) {  
+                hasGuessedCorrectly = true;  
+                System.out.println("Congratulations! You've guessed the number " + numberToGuess + " in " + attempts + " attempts.");  
+            } else {  
+                provideFeedback(guess, numberToGuess);  
+            }  
+        }  
+
+        scanner.close();  
+    }  
+
+    private static void provideFeedback(int guess, int numberToGuess) {  
+        if (guess < numberToGuess) {  
+            System.out.println("Your guess is too low. Try again!");  
+        } else {  
+            System.out.println("Your guess is too high. Try again!");  
+        }  
+    }  
+}
