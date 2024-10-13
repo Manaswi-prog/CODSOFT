@@ -1,0 +1,142 @@
+import java.util.ArrayList;  
+import java.util.List;  
+import java.util.Scanner;  
+
+class Course {  
+    String code;  
+    String title;  
+    String description;  
+    int capacity;  
+    int enrolled;  
+
+    public Course(String code, String title, String description, int capacity) {  
+        this.code = code;  
+        this.title = title;  
+        this.description = description;  
+        this.capacity = capacity;  
+        this.enrolled = 0;  
+    }  
+
+    public boolean register() {  
+        if (enrolled < capacity) {  
+            enrolled++;  
+            return true;  
+        }  
+        return false;  
+    }  
+
+    public boolean drop() {  
+        if (enrolled > 0) {  
+            enrolled--;  
+            return true;  
+        }  
+        return false;  
+    }  
+
+    @Override  
+    public String toString() {  
+        return "Course Code: " + code + ", Title: " + title + ", Description: " + description +   
+               ", Capacity: " + capacity + ", Enrolled: " + enrolled;  
+    }  
+}  
+
+class Student {  
+    String id;  
+    String name;  
+    List<Course> registeredCourses;  
+
+    public Student(String id, String name) {  
+        this.id = id;  
+        this.name = name;  
+        this.registeredCourses = new ArrayList<>();  
+    }  
+
+    public void registerCourse(Course course) {  
+        if (course.register()) {  
+            registeredCourses.add(course);  
+            System.out.println("Successfully registered for " + course.title);  
+        } else {  
+            System.out.println("Course " + course.title + " is full.");  
+        }  
+    }  
+
+    public void dropCourse(Course course) {  
+        if (registeredCourses.remove(course) && course.drop()) {  
+            System.out.println("Successfully dropped " + course.title);  
+        } else {  
+            System.out.println("You are not registered for " + course.title);  
+        }  
+    }  
+
+    public void listRegisteredCourses() {  
+        System.out.println("Registered Courses for " + name + ":");  
+        for (Course course : registeredCourses) {  
+            System.out.println(course);  
+        }  
+    }  
+}  
+
+public class CourseRegistrationSystem {  
+    public static void main(String[] args) {  
+        Scanner scanner = new Scanner(System.in);  
+        List<Course> courses = new ArrayList<>();  
+        List<Student> students = new ArrayList<>();  
+
+        // Sample courses  
+        courses.add(new Course("CS101", "Introduction to Computer Science", "Learn the basics of programming.", 3));  
+        courses.add(new Course("MATH101", "Calculus I", "Introduction to calculus.", 2));  
+        courses.add(new Course("ENG101", "English Literature", "Study of classic literature.", 5));  
+
+        // Sample student  
+        Student student = new Student("S001", "John Doe");  
+        students.add(student);  
+
+        while (true) {  
+            System.out.println("\n1. List Courses");  
+            System.out.println("2. Register for a Course");  
+            System.out.println("3. Drop a Course");  
+            System.out.println("4. List Registered Courses");  
+            System.out.println("5. Exit");  
+            System.out.print("Choose an option: ");  
+            int choice = scanner.nextInt();  
+
+            switch (choice) {  
+                case 1:  
+                    System.out.println("Available Courses:");  
+                    for (Course course : courses) {  
+                        System.out.println(course);  
+                    }  
+                    break;  
+                case 2:  
+                    System.out.print("Enter course code to register: ");  
+                    String registerCode = scanner.next();  
+                    for (Course course : courses) {  
+                        if (course.code.equals(registerCode)) {  
+                            student.registerCourse(course);  
+                            break;  
+                        }  
+                    }  
+                    break;  
+                case 3:  
+                    System.out.print("Enter course code to drop: ");  
+                    String dropCode = scanner.next();  
+                    for (Course course : courses) {  
+                        if (course.code.equals(dropCode)) {  
+                            student.dropCourse(course);  
+                            break;  
+                        }  
+                    }  
+                    break;  
+                case 4:  
+                    student.listRegisteredCourses();  
+                    break;  
+                case 5:  
+                    System.out.println("Exiting...");  
+                    scanner.close();  
+                    return;  
+                default:  
+                    System.out.println("Invalid option. Please try again.");  
+            }  
+        }  
+    }  
+}
